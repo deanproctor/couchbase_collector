@@ -37,9 +37,10 @@ class CouchBaseCollector(diamond.collector.Collector):
 
     data = json.load(f)
 
-    self.publish("items.count", data["basicStats"]["itemCount"])
+    # Original setting for only publishing basicStats
+    #self.publish("items.count", data["basicStats"]["itemCount"])
+
+    [self.publish(basicStatsKey, data["basicStats"][basicStatsKey]) for basicStatsKey in data["basicStats"].keys()]
 
     self.log.info("collected!")
-
-
 

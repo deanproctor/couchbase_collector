@@ -19,9 +19,9 @@ class CouchBaseCollector(diamond.collector.Collector):
     config.update({
       'host':        'localhost',
       'port':        8091,
-      'path':        'couchbase',
-      'username': 'admin',
-      'password': 'password'
+      'path':        'beer-sample',
+      'username': 'Administrator',
+      'password': 'changeme'
     })
     return config
 

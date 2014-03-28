@@ -9,8 +9,8 @@ try:
   import json
 except ImportError:
   import simplejson as json
-  except ImportError:
-    log.info("ERROR: json or simplejson python module, required by the CouchBaseCollector does not exist in your python environment")
+except ImportError:
+  log.info("ERROR: json or simplejson python module, required by the CouchBaseCollector does not exist in your python environment")
 
 class CouchBaseCollector(diamond.collector.Collector):
 

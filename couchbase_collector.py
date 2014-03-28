@@ -49,7 +49,7 @@ class CouchBaseCollector(diamond.collector.Collector):
     #self.publish("items.count", data["basicStats"]["itemCount"])
 
     [self.publish(basicStatsKey, data["basicStats"][basicStatsKey]) for basicStatsKey in data["basicStats"].keys()]
-    [self.publish(interestingStatsKey, data["nodes"]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data["nodes"]["interestingStats"].keys()]
+    [self.publish(interestingStatsKey, data["nodes"][0]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data["nodes"][0]["interestingStats"].keys()]
     [self.publish(quotaKey, data["quota"][quotaKey]) for quotaKey in data["quota"].keys()
 ]
 

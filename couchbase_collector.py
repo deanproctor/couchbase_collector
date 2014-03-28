@@ -1,8 +1,16 @@
 import diamond.collector
 import json
-import simplejson as json
+#import simplejson as json
 import urllib2
 import base64
+
+# Default strategy it to use json (good enough on python2.7). simplejson can be faster if updated. ymmv
+try:
+  import json
+except ImportError:
+  import simplejson as json
+  except ImportError:
+    log.info("ERROR: json or simplejson python module, required by the CouchBaseCollector does not exist in your python environment")
 
 class CouchBaseCollector(diamond.collector.Collector):
 
@@ -41,6 +49,9 @@ class CouchBaseCollector(diamond.collector.Collector):
     #self.publish("items.count", data["basicStats"]["itemCount"])
 
     [self.publish(basicStatsKey, data["basicStats"][basicStatsKey]) for basicStatsKey in data["basicStats"].keys()]
+    [self.publish(interestingStatsKey, data["nodes"]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data["nodes"]["interestingStats"].keys()]
+    [self.publish(quotaKey, data["quota"][quotaKey]) for quotaKey in data["quota"].keys()
+]
 
     self.log.info("collected!")
 

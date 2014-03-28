@@ -48,9 +48,14 @@ class CouchBaseCollector(diamond.collector.Collector):
     # Original setting for only publishing basicStats
     #self.publish("items.count", data["basicStats"]["itemCount"])
 
-    [self.publish(basicStatsKey, data["basicStats"][basicStatsKey]) for basicStatsKey in data["basicStats"].keys()]
-    [self.publish(interestingStatsKey, data["nodes"][0]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data["nodes"][0]["interestingStats"].keys()]
-    [self.publish(quotaKey, data["quota"][quotaKey]) for quotaKey in data["quota"].keys()
+    thenode = "basicStats"
+    [self.publish("%s.%s" % (thenode,basicStatsKey), data[thenode][basicStatsKey]) for basicStatsKey in data[thenode].keys()]
+
+    thenode = "nodes"
+    [self.publish("%s.%s" % (thenode,interestingStatsKey), data[thenode][0]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data[thenode][0]["interestingStats"].keys()]                                      
+
+    thenode = "quota"
+    [self.publish(quotaKey, data[thenode][quotaKey]) for quotaKey in data[thenode].keys()
 ]
 
     self.log.info("collected!")

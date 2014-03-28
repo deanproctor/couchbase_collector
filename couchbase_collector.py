@@ -55,7 +55,7 @@ class CouchBaseCollector(diamond.collector.Collector):
     [self.publish("%s.%s" % (thenode,interestingStatsKey), data[thenode][0]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data[thenode][0]["interestingStats"].keys()]                                      
 
     thenode = "quota"
-    [self.publish(quotaKey, data[thenode][quotaKey]) for quotaKey in data[thenode].keys()
+    [self.publish("%s.%s" % (thenode,quotaKey), data[thenode][quotaKey]) for quotaKey in data[thenode].keys()
 ]
 
     self.log.info("collected!")

@@ -49,7 +49,10 @@ Once you restart diamond you should be able to see in the log file entries like 
     mytestserver.beer-sample.quota.ram: 104857600
     mytestserver.beer-sample.quota.rawRAM: 104857600
 
-Limitations
------------
+Cluster Stats
+-------------
 
-For the moment it only collects interesting stats from the first "nodes" array element.
+In clustered environments the nodes array holds "interestingStats" for all cluster members.
+The Collector will only ship interestingStats referring to the host being queried.
+
+Each cluster member is assumed to run a separate instance of diamond (no point running a couchbase cluster one one machine) so interestingStats of each will appear under the corresponding host.

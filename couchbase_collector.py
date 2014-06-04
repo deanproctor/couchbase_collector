@@ -2,6 +2,7 @@ import diamond.collector
 import json
 #import simplejson as json
 import urllib2
+from urlparse import urlparse
 import base64
 
 # Default strategy it to use json (good enough on python2.7). simplejson can be faster if updated. ymmv
@@ -48,14 +49,20 @@ class CouchBaseCollector(diamond.collector.Collector):
     # Original setting for only publishing basicStats
     #self.publish("items.count", data["basicStats"]["itemCount"])
 
-    thenode = "basicStats"
-    [self.publish("%s.%s" % (thenode,basicStatsKey), data[thenode][basicStatsKey]) for basicStatsKey in data[thenode].keys()]
+    statobjname = "basicStats"
+    [self.publish("%s.%s" % (statobjname,basicStatsKey), data[statobjname][basicStatsKey]) for basicStatsKey in data[statobjname].keys()]
 
-    thenode = "nodes"
-    [self.publish("%s.%s" % (thenode,interestingStatsKey), data[thenode][0]["interestingStats"][interestingStatsKey]) for interestingStatsKey in data[thenode][0]["interestingStats"].keys()]                                      
+    statobjname = "nodes"
 
-    thenode = "quota"
-    [self.publish("%s.%s" % (thenode,quotaKey), data[thenode][quotaKey]) for quotaKey in data[thenode].keys()
+    for nodeelem in data[statobjname]:
+      # We are only interested in the node stats for this node; for other nodes another diamond collector will be running
+      if "thisNode" in nodeelem.keys():
+        nodepath = "thisnode"
+
+        [self.publish("%s.%s" % (statobjname,interestingStatsKey), nodeelem["interestingStats"][interestingStatsKey]) for interestingStatsKey in nodeelem["interestingStats"].keys()]
+        
+    statobjname = "quota"
+    [self.publish("%s.%s" % (statobjname,quotaKey), data[statobjname][quotaKey]) for quotaKey in data[statobjname].keys()
 ]
 
     self.log.info("collected!")

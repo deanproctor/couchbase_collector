@@ -1,58 +1,36 @@
-couchbase extended diamond module
-=================================
+Couchbase Collector for Diamond
+=====
 
-This is a cloned repo from https://github.com/zooldk/couchbase_collector
-------------------------------------------------------------------------
+Collect statistics from the Couchbase Buckets API.
+See: http://docs.couchbase.com/admin/admin/REST/rest-bucket-intro.html
 
-It expands the previous repo by collecting all metrics under:
+#### Dependencies
 
-    "nodes" : [ "interestingStats" ]
-    "basicStats"
-    "quota"
+ * json
+ * urllib2
 
-keys from the returned couchbase json object.
+#### Example Configuration
 
-You need to place it under a directory called couchbase_collector under /usr/share/diamond/collectors or wherever your diamond collector code resides
+CouchbaseCollector.conf
 
-You also need a configuration file CouchBaseCollector.conf under /etc/diamond/collector (or wherever you collector configuration files reside) with the following content:
-
+```
     enabled = True
+    host    = 192.168.56.101:8091
+    buckets = default, sessions
+    stats   = cmd_get, cmd_set, couch_docs_fragmentation, couch_views_fragmentation, curr_connections, curr_items, decr_hits, decr_misses, delete_hits, delete_misses, ep_bg_fetched, ep_dcp_2i_items_remaining, ep_dcp_other_backoff, ep_dcp_other_count, ep_dcp_other_items_remaining, ep_dcp_other_items_sent, ep_dcp_other_producer_count, ep_dcp_other_total_bytes, ep_dcp_replica_backoff, ep_dcp_replica_count, ep_dcp_replica_items_remaining, ep_dcp_replica_items_sent, ep_dcp_replica_total_bytes, ep_dcp_xdcr_backoff, ep_dcp_xdcr_count, ep_dcp_xdcr_items_remaining, ep_dcp_xdcr_items_sent, ep_dcp_xdcr_producer_count, ep_dcp_xdcr_total_bytes, ep_diskqueue_drain, ep_diskqueue_fill, ep_diskqueue_items, ep_flusher_todo, ep_kv_size, ep_mem_high_wat, ep_oom_errors, ep_queue_size, ep_resident_items_rate, ep_tmp_oom_errors, incr_hits, incr_misses, mem_used, vb_active_queue_age, vb_active_queue_drain, vb_active_queue_fill, vb_active_queue_size, vb_active_resident_items_ratio, vb_avg_total_queue_age, vb_pending_queue_age, vb_pending_queue_drain, vb_pending_queue_fill, vb_pending_queue_size, vb_replica_queue_age, vb_replica_queue_drain, vb_replica_queue_fill, vb_replica_queue_size, vb_replica_resident_items_ratio
+    ignore = timestamp
+```
 
-That should be it.
+#### Options - [Generic Options](Configuration)
 
-Configuration parameters for couchbase (host, port, path, name, password) need to be placed inside the get_default_config method in the CouchBaseCollector class.
+<table><tr><th>Setting</th><th>Default</th><th>Description</th><th>Type</th></tr>
+<tr><td>enabled</td><td>False</td><td>Enable collecting these metrics</td><td>bool</td></tr>
+<tr><td>host</td><td>localhost</td><td>The hostname(:port) to get metrics from</td><td>str</td></tr>
+<tr><td>user</td><td>Administrator</td><td>Admin username for authentication (Recommendation: use read-only admin)</td><td>str</td></tr>
+<tr><td>passwd</td><td>password</td><td>Admin password for authentication</td><td>str</td></tr>
+<tr><td>ssl</td><td>False</td><td>True to enable SSL connections.  Default is False</td><td>bool</td></tr>
+<tr><td>buckets</td><td>all</td><td>A list of buckets to get metrics from. Defaults to 'all' which will query all buckets</td><td>list</td></tr>
+<tr><td>stats</td><td>all</td><td>The list of stats to save.  Defaults to 'all' which will save everything</td><td>list</td></tr>
+<tr><td>ignore</td><td>,</td><td>The list of stats to exclude. Useful when 'stats' = 'all'</td><td>list</td></tr>
+</table>
 
-Log file example
-----------------
-
-Once you restart diamond you should be able to see in the log file entries like (metrics are from the beer-sample example in couchbase):
-
-    mytestserver.beer-sample.basicStats.diskUsed: 25565808
-    mytestserver.beer-sample.basicStats.memUsed: 35407008
-    mytestserver.beer-sample.basicStats.diskFetches: 0.0
-    mytestserver.beer-sample.basicStats.quotaPercentUsed: 33.7667541504
-    mytestserver.beer-sample.basicStats.opsPerSec: 0.0
-    mytestserver.beer-sample.basicStats.dataUsed: 24288256
-    mytestserver.beer-sample.basicStats.itemCount: 7303
-    mytestserver.beer-sample.nodes.couch_views_data_size: 543142
-    mytestserver.beer-sample.nodes.couch_docs_actual_disk_size: 56489751
-    mytestserver.beer-sample.nodes.couch_views_actual_disk_size: 564012
-    mytestserver.beer-sample.nodes.ops: 0.0
-    mytestserver.beer-sample.nodes.vb_replica_curr_items: 0
-    mytestserver.beer-sample.nodes.cmd_get: 0.0
-    mytestserver.beer-sample.nodes.mem_used: 99496312
-    mytestserver.beer-sample.nodes.get_hits: 0.0
-    mytestserver.beer-sample.nodes.curr_items: 7889
-    mytestserver.beer-sample.nodes.ep_bg_fetched: 0.0
-    mytestserver.beer-sample.nodes.curr_items_tot: 7889
-    mytestserver.beer-sample.nodes.couch_docs_data_size: 55645339
-    mytestserver.beer-sample.quota.ram: 104857600
-    mytestserver.beer-sample.quota.rawRAM: 104857600
-
-Cluster Stats
--------------
-
-In clustered environments the nodes array holds "interestingStats" for all cluster members.
-The Collector will only ship interestingStats referring to the host being queried.
-
-Each cluster member is assumed to run a separate instance of diamond (no point running a couchbase cluster one one machine) so interestingStats of each will appear under the corresponding host.

@@ -21,16 +21,16 @@ CouchbaseCollector.conf
     ignore = timestamp
 ```
 
-#### Options - [Generic Options](Configuration)
+#### Options
 
 <table><tr><th>Setting</th><th>Default</th><th>Description</th><th>Type</th></tr>
 <tr><td>enabled</td><td>False</td><td>Enable collecting these metrics</td><td>bool</td></tr>
 <tr><td>host</td><td>localhost</td><td>The hostname(:port) to get metrics from</td><td>str</td></tr>
-<tr><td>user</td><td>Administrator</td><td>Admin username for authentication (Recommendation: use read-only admin)</td><td>str</td></tr>
+<tr><td>user</td><td>Administrator</td><td>Admin username for authentication. Recommendation: use read-only admin</td><td>str</td></tr>
 <tr><td>passwd</td><td>password</td><td>Admin password for authentication</td><td>str</td></tr>
-<tr><td>ssl</td><td>False</td><td>True to enable SSL connections.  Default is False</td><td>bool</td></tr>
-<tr><td>buckets</td><td>all</td><td>A list of buckets to get metrics from. Defaults to 'all' which will query all buckets</td><td>list</td></tr>
-<tr><td>stats</td><td>all</td><td>The list of stats to save.  Defaults to 'all' which will save everything</td><td>list</td></tr>
-<tr><td>ignore</td><td>,</td><td>The list of stats to exclude. Useful when 'stats' = 'all'</td><td>list</td></tr>
+<tr><td>ssl</td><td>False</td><td>True to enable SSL connections</td><td>bool</td></tr>
+<tr><td>buckets</td><td>all</td><td>A list of buckets to get metrics from. The default is to query all buckets</td><td>list</td></tr>
+<tr><td>stats</td><td>all</td><td>The list of stats to save.  The default is to save everything</td><td>list</td></tr>
+<tr><td>ignore</td><td></td><td>The list of stats to exclude. Useful when 'stats' = 'all'</td><td>list</td></tr>
 </table>
 

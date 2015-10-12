@@ -37,11 +37,11 @@ class CouchbaseCollector(diamond.collector.Collector):
     config_help = super(CouchbaseCollector, self).get_default_config_help()
     config_help.update({
       'host':    'The hostname(:port) to get metrics from',
-      'user':    'Admin username for authentication (Recommendation: use read-only admin)',
+      'user':    'Admin username for authentication. Recommendation: use read-only admin',
       'passwd':  'Admin password for authentication',
-      'ssl':     'True to enable SSL connections.  Default is False',
-      'buckets': 'A list of buckets to get metrics from. Defaults to \'all\' which will query all buckets',
-      'stats':   'The list of stats to save.  Defaults to \'all\' which will save everything',
+      'ssl':     'True to enable SSL connections',
+      'buckets': 'A list of buckets to get metrics from. Default is to query all buckets',
+      'stats':   'The list of stats to save.  Default is to save everything',
       'ignore':  'The list of stats to exclude. Useful when \'stats\' = \'all\'' 
     })
     return config_help

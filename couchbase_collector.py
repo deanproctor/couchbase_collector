@@ -80,7 +80,7 @@ class CouchbaseCollector(diamond.collector.Collector):
     request.add_header("Authorization", "Basic %s" % auth_string)
 
     try:
-      f = urllib2.urlopen(url)
+      f = urllib2.urlopen(request)
       return json.load(f)
     except urllib2.HTTPError, err:
       self.log.error("CouchbaseCollector: %s, %s", url, err)

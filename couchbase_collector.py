@@ -74,7 +74,7 @@ class CouchbaseCollector(diamond.collector.Collector):
     if bucket is not None:
       url = url + bucket + '/stats'
 
-    auth_string = base64.encodestring('%s:%s' % (self.config['user'], self.config['passwd']))
+    auth_string = base64.b64encode('%s:%s' % (self.config['user'], self.config['passwd']))
 
     request = urllib2.Request(url);
     request.add_header("Authorization", "Basic %s" % auth_string)
